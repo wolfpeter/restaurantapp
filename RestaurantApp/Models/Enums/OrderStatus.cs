@@ -3,7 +3,7 @@
 public enum OrderStatus
 {
     Received = 1,
-    Canceled,
-    InProgress,
+    Preparing,
+    Ready,
     Delivered
 }
