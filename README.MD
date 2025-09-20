@@ -1,87 +1,76 @@
-RestaurantApp - Food Ordering System
-This project is a RESTful web service that implements the core functionality of a food ordering system. It allows users to register, log in, browse restaurants, and place orders. Restaurant owners can manage their incoming orders.
+# 🍔 RestaurantApp - Food Ordering System
 
-Tech Stack
-The project is built on a modern technology stack:
+A RESTful web service that implements the core functionality of a food ordering system. It allows users to register, log in, browse restaurants, and place orders. Restaurant owners can manage their incoming orders.
 
-Backend: C#
+---
 
-Framework: ASP.NET Core 8 Web API
+## ✨ Core Features
 
-Database: Entity Framework Core 8 with SQLite
+* **User Management:** Registration and login with `User` and `Restaurant` roles.
+* **Restaurant Browsing:** List restaurants and their menus.
+* **Order Management:** Customers can place orders, and restaurants can update the order status.
+* **Real-time Notifications:** Customers receive instant updates on their order status changes via SignalR.
+* **Automatic Database Management:** EF Core migrations are applied automatically on startup.
+* **Seed Data:** The application seeds the database with a sample restaurant and a manager user on its first run.
 
-Authentication: JWT (JSON Web Tokens)
+---
 
-Real-time Communication: SignalR
+## 🛠️ Tech Stack
 
-Testing: xUnit
+* **Backend:** C#
+* **Framework:** ASP.NET Core 8 Web API
+* **Database:** Entity Framework Core 8 with SQLite
+* **Authentication:** JWT (JSON Web Tokens)
+* **Real-time Communication:** SignalR
+* **Testing:** xUnit
+* **API Documentation:** Swagger (OpenAPI)
+* **Containerization:** Docker
 
-API Documentation: Swagger (OpenAPI)
+---
 
-Containerization: Docker
+## 🚀 Getting Started
 
-Core Features
-User Management: Registration and login with User and Restaurant roles.
-
-Restaurant Browsing: List restaurants and their menus.
-
-Order Management: Customers can place orders, and restaurants can update the order status.
-
-Real-time Notifications: Customers receive instant updates on their order status changes via SignalR.
-
-Automatic Database Management: EF Core migrations are applied automatically on startup.
-
-Seed Data: The application seeds the database with a sample restaurant and a manager user on its first run.
-
-How to Run the Application
 You can run the project in two ways.
 
-1. Using the .NET CLI
-Prerequisites:
+### 1. Using the .NET CLI
 
-.NET 8 SDK
+**Prerequisites:**
+* .NET 8 SDK
 
-Steps:
+**Steps:**
+1.  Clone the repository.
+2.  Navigate to the `RestaurantApp` project folder in your terminal.
+3.  Run the following command:
+    ```bash
+    dotnet run
+    ```
+4.  The application will start, and the database (**`RestaurantApp.db`**) will be created automatically.
 
-Clone the repository.
+The API will be available at `https://localhost:7048`, and the Swagger UI can be accessed at `https://localhost:7048/swagger`.
 
-Navigate to the RestaurantApp project folder in your terminal.
+### 2. Using Docker
 
-Run the following command:
+**Prerequisites:**
+* Docker Desktop
 
-Bash
+**Steps:**
+1.  Clone the repository.
+2.  Navigate to the solution's root directory in your terminal.
+3.  Build the Docker image:
+    ```bash
+    docker build -t restaurant-app .
+    ```
+4.  Run the container:
+    ```bash
+    docker run -p 8080:8080 -p 8081:8081 restaurant-app
+    ```
 
-dotnet run
-The application will start, and the database (RestaurantApp.db) will be created automatically in the project folder.
+The API will be available at `http://localhost:8080`, and the Swagger UI can be accessed at `http://localhost:8080/swagger`.
 
-The API will be available at https://localhost:7048, and the Swagger UI can be accessed at https://localhost:7048/swagger.
+---
 
-2. Using Docker
-Prerequisites:
+## 🧪 Testing
 
-Docker Desktop
-
-Steps:
-
-Clone the repository.
-
-Navigate to the solution's root directory in your terminal.
-
-Build the Docker image:
-
-Bash
-
-docker build -t restaurant-app .
-Run the container:
-
-Bash
-
-docker run -p 8080:8080 -p 8081:8081 restaurant-app
-The API will be available at http://localhost:8080, and the Swagger UI can be accessed at http://localhost:8080/swagger.
-
-Testing
 The project includes unit tests for the service layer logic. You can run the tests from the solution's root directory:
-
-Bash
-
+```bash
 dotnet test
