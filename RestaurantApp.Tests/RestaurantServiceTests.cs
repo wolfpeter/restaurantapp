@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantApp.DataAccess.DbContexts;
 using RestaurantApp.Models.Entities;
 using RestaurantApp.Services;
-using RestaurantApp.Utils;
+using RestaurantApp.Utils.Mapping;
 
 namespace RestaurantApp.Tests;
 

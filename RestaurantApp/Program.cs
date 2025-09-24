@@ -9,6 +9,8 @@ using RestaurantApp.Hubs;
 using RestaurantApp.Middleware;
 using RestaurantApp.Services;
 using RestaurantApp.Utils;
+using RestaurantApp.Utils.HealthCheck;
+using RestaurantApp.Utils.Mapping;
 
 namespace RestaurantApp;
 
@@ -88,6 +90,13 @@ public class Program
             });
 
         builder.Services.AddAuthorization();
+        
+        builder.Services.AddHealthChecks();
+        builder.Services.AddHealthChecks()
+            .AddCheck<DatabaseHealthCheck>("Database")
+            .AddCheck("Memory", new MemoryHealthCheck(500 * 1024 * 1024))
+            .AddCheck("CPU", new CpuHealthCheck(80, TimeSpan.FromSeconds(1)));
+
         
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         

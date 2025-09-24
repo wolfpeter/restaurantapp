@@ -2,7 +2,7 @@
 using RestaurantApp.Models.DTOs;
 using RestaurantApp.Models.Entities;
 
-namespace RestaurantApp.Utils;
+namespace RestaurantApp.Utils.Mapping;
 
 public class MappingProfile : Profile
 {

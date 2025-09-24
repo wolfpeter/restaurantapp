@@ -11,6 +11,7 @@ using RestaurantApp.Models.Entities;
 using RestaurantApp.Models.Enums;
 using RestaurantApp.Services;
 using RestaurantApp.Utils;
+using RestaurantApp.Utils.Mapping;
 
 namespace RestaurantApp.Tests;
 
