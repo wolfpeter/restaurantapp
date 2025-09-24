@@ -109,7 +109,20 @@ public class Program
         builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
         builder.Services.AddInMemoryRateLimiting();
         
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+        
         var app = builder.Build();
+        
+        app.UseCors("AllowAll");
         
         ApplyDatabaseMigrations(app);
         
