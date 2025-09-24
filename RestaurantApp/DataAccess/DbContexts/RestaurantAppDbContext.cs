@@ -62,6 +62,8 @@ public class RestaurantAppDbContext : DbContext
             .WithMany()
             .HasForeignKey(oi => oi.MenuItemId);
         
+        modelBuilder.Seed();
+        
         base.OnModelCreating(modelBuilder);
     }
 }

@@ -55,6 +55,41 @@ namespace RestaurantApp.DataAccess.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("MenuItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Category = "Levesek",
+                            Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IsAvailable = true,
+                            Name = "Gyümölcsleves",
+                            Price = 100m,
+                            RestaurantId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = "Előételek",
+                            Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IsAvailable = true,
+                            Name = "Rántott sajt",
+                            Price = 100m,
+                            RestaurantId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Category = "Köretek",
+                            Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IsAvailable = true,
+                            Name = "Rizs",
+                            Price = 100m,
+                            RestaurantId = 1
+                        });
                 });
 
             modelBuilder.Entity("RestaurantApp.Models.Entities.Order", b =>
@@ -164,6 +199,18 @@ namespace RestaurantApp.DataAccess.Migrations
                         .HasFilter("Deleted IS NULL");
 
                     b.ToTable("Restaurants");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "6722 Szeged, Indóház tér 1",
+                            Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Teszt étterem",
+                            Email = "info@vasutetterem.hu",
+                            Name = "Vasút étterem",
+                            PhoneNumber = "0662123456"
+                        });
                 });
 
             modelBuilder.Entity("RestaurantApp.Models.Entities.User", b =>
@@ -218,6 +265,21 @@ namespace RestaurantApp.DataAccess.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "",
+                            Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "manager@vasutetterem.hu",
+                            FirstName = "John",
+                            LastName = "Doe",
+                            PasswordHash = "$2a$11$VoJtOj.3CALx84THrqdpruADp9ldqh16.RjH/pkbbOtdHOCk1N4gG",
+                            PhoneNumber = "0662123456",
+                            RestaurantId = 1,
+                            Role = "Restaurant"
+                        });
                 });
 
             modelBuilder.Entity("RestaurantApp.Models.Entities.MenuItem", b =>

@@ -48,7 +48,7 @@ public class OrderServiceTests : IDisposable
     {
         var user = new User 
         { 
-            Id = 1, 
+            Id = int.MaxValue, 
             Address = "Fake Address", 
             Email="test@test.com", 
             FirstName ="Test", 
@@ -56,11 +56,11 @@ public class OrderServiceTests : IDisposable
             PasswordHash = "..." 
         };
         
-        var restaurant = new Restaurant { Id = 1, Name = "Test Restaurant" };
+        var restaurant = new Restaurant { Id = int.MaxValue, Name = "Test Restaurant" };
         var menuItems = new List<MenuItem>
         {
-            new() { Id = 1, Name = "Pizza", Price = 10, RestaurantId = 1 },
-            new() { Id = 2, Name = "Pasta", Price = 8, RestaurantId = 1 }
+            new() { Id = int.MaxValue, Name = "Pizza", Price = 10, RestaurantId = int.MaxValue },
+            new() { Id = int.MaxValue - 1, Name = "Pasta", Price = 8, RestaurantId = int.MaxValue }
         };
 
         await context.Users.AddAsync(user);
@@ -80,12 +80,12 @@ public class OrderServiceTests : IDisposable
         
         var createOrderRequest = new CreateOrderRequest
         {
-            RestaurantId = 1,
+            RestaurantId = int.MaxValue,
             DeliveryAddress = "Fake Address",
             Items = new List<OrderItemRequest>
             {
-                new() { MenuItemId = 1, Quantity = 2 },
-                new() { MenuItemId = 2, Quantity = 1 }
+                new() { MenuItemId = int.MaxValue, Quantity = 2 },
+                new() { MenuItemId = int.MaxValue - 1, Quantity = 1 }
             }
         };
 
@@ -114,18 +114,18 @@ public class OrderServiceTests : IDisposable
         
         var createOrderRequest = new CreateOrderRequest
         {
-            RestaurantId = 99,
+            RestaurantId = int.MaxValue - 1,
             Items = new List<OrderItemRequest>
             {
-                new() { MenuItemId = 1, Quantity = 1 }
+                new() { MenuItemId = int.MaxValue, Quantity = 1 }
             }
         };
 
         // ACT & ASSERT
         var exception = await Assert.ThrowsAsync<ArgumentException>(() => 
-            orderService.PlaceOrderAsync(1, createOrderRequest));
+            orderService.PlaceOrderAsync(int.MaxValue, createOrderRequest));
             
-        Assert.Equal("Restaurant with ID 99 not found.", exception.Message);
+        Assert.Equal($"Restaurant with ID {int.MaxValue - 1} not found.", exception.Message);
     }
 
     [Fact]
@@ -139,16 +139,16 @@ public class OrderServiceTests : IDisposable
         
         var createOrderRequest = new CreateOrderRequest
         {
-            RestaurantId = 1,
+            RestaurantId = int.MaxValue,
             Items = new List<OrderItemRequest>
             {
-                new() { MenuItemId = 99, Quantity = 1 }
+                new() { MenuItemId = int.MaxValue - 100, Quantity = 1 }
             }
         };
 
         // ACT & ASSERT
         var exception = await Assert.ThrowsAsync<ArgumentException>(() => 
-            orderService.PlaceOrderAsync(1, createOrderRequest));
+            orderService.PlaceOrderAsync(int.MaxValue, createOrderRequest));
             
         Assert.Equal("One or more menu items are invalid or do not belong to this restaurant.", exception.Message);
     }

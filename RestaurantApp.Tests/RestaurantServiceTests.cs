@@ -33,8 +33,8 @@ public class RestaurantServiceTests : IDisposable
     {
         var restaurants = new List<Restaurant>
         {
-            new() { Id = 1, Name = "Restaurant A", Address = "Address A" },
-            new() { Id = 2, Name = "Restaurant B", Address = "Address B" }
+            new() { Id = int.MaxValue - 1, Name = "Restaurant A", Address = "Address A" },
+            new() { Id = int.MaxValue, Name = "Restaurant B", Address = "Address B" }
         };
         await context.Restaurants.AddRangeAsync(restaurants);
         await context.SaveChangesAsync();
@@ -53,7 +53,7 @@ public class RestaurantServiceTests : IDisposable
 
         // ASSERT
         Assert.NotNull(result);
-        Assert.Equal(2, result.Count);
+        Assert.Equal(3, result.Count);
         Assert.Equal("Restaurant A", result[0].Name);
     }
 
@@ -63,17 +63,17 @@ public class RestaurantServiceTests : IDisposable
         // ARRANGE
         await using var context = new RestaurantAppDbContext(_dbContextOptions);
         await SeedDatabase(context);
-        context.MenuItems.Add(new MenuItem { Id = 1, Name = "Pizza", Price = 10, RestaurantId = 1 });
+        context.MenuItems.Add(new MenuItem { Id = int.MaxValue, Name = "Pizza", Price = 10, RestaurantId = int.MaxValue });
         await context.SaveChangesAsync();
 
         var service = new RestaurantService(context, _mapper);
 
         // ACT
-        var result = await service.GetRestaurantByIdAsync(1);
+        var result = await service.GetRestaurantByIdAsync(int.MaxValue);
 
         // ASSERT
         Assert.NotNull(result);
-        Assert.Equal("Restaurant A", result.Name);
+        Assert.Equal("Restaurant B", result.Name);
         Assert.Single(result.Menu);
         Assert.Equal("Pizza", result.Menu[0].Name);
     }
