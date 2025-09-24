@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +9,6 @@ using RestaurantApp.DataAccess.DbContexts;
 using RestaurantApp.Hubs;
 using RestaurantApp.Middleware;
 using RestaurantApp.Services;
-using RestaurantApp.Utils;
 using RestaurantApp.Utils.HealthCheck;
 using RestaurantApp.Utils.Mapping;
 
@@ -105,7 +105,10 @@ public class Program
         builder.Services.AddScoped<IOrderService, OrderService>();
         
         builder.Services.AddSignalR();
-
+        
+        builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+        builder.Services.AddInMemoryRateLimiting();
+        
         var app = builder.Build();
         
         ApplyDatabaseMigrations(app);
