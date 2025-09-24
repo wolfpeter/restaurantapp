@@ -96,7 +96,6 @@ public class Program
             .AddCheck<DatabaseHealthCheck>("Database")
             .AddCheck("Memory", new MemoryHealthCheck(500 * 1024 * 1024))
             .AddCheck("CPU", new CpuHealthCheck(80, TimeSpan.FromSeconds(1)));
-
         
         builder.Services.AddAutoMapper(typeof(MappingProfile));
         
@@ -106,8 +105,11 @@ public class Program
         
         builder.Services.AddSignalR();
         
+        builder.Services.AddMemoryCache();
+        
         builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
         builder.Services.AddInMemoryRateLimiting();
+        builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         
         builder.Services.AddCors(options =>
         {
@@ -123,6 +125,7 @@ public class Program
         var app = builder.Build();
         
         app.UseCors("AllowAll");
+        app.UseIpRateLimiting();
         
         ApplyDatabaseMigrations(app);
         
@@ -137,6 +140,25 @@ public class Program
                 options.RoutePrefix = "swagger";
             });
         }
+        
+        app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+        {
+            ResponseWriter = async (context, report) =>
+            {
+                context.Response.ContentType = "application/json";
+                var result = System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    status = report.Status.ToString(),
+                    results = report.Entries.Select(e => new
+                    {
+                        key = e.Key,
+                        status = e.Value.Status.ToString(),
+                        description = e.Value.Description
+                    })
+                });
+                await context.Response.WriteAsync(result);
+            }
+        });
 
         app.UseHttpsRedirection();
 
@@ -146,7 +168,6 @@ public class Program
         app.MapControllers();
 
         app.MapHub<OrderHub>("/orderhub");
-        app.MapHealthChecks("/health");
         
         app.Run();
     }
