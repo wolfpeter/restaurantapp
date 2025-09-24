@@ -133,6 +133,7 @@ public class Program
         app.MapControllers();
 
         app.MapHub<OrderHub>("/orderhub");
+        app.MapHealthChecks("/health");
         
         app.Run();
     }
