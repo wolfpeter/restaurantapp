@@ -11,6 +11,7 @@ using RestaurantApp.Middleware;
 using RestaurantApp.Services;
 using RestaurantApp.Utils.HealthCheck;
 using RestaurantApp.Utils.Mapping;
+using Serilog;
 
 namespace RestaurantApp;
 
@@ -28,6 +29,14 @@ public class Program
         builder.Services.AddControllers();
 
         builder.Services.AddEndpointsApiExplorer();
+        
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .Enrich.FromLogContext()
+            .CreateLogger();
+
+        builder.Host.UseSerilog();
+        
         builder.Services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo
